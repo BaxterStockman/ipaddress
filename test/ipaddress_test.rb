@@ -39,9 +39,17 @@ class IPAddressTest < Minitest::Test
 
   def test_method_IPAddress
 
-    assert_instance_of @ipv4class, @method.call(@valid_ipv4) 
-    assert_instance_of @ipv6class, @method.call(@valid_ipv6) 
-    assert_instance_of @mappedclass, @method.call(@valid_mapped)
+    ipv4_instance = @method.call(@valid_ipv4)
+    ipv6_instance = @method.call(@valid_ipv6)
+    mapped_instance = @method.call(@valid_mapped)
+
+    assert_instance_of @ipv4class, ipv4_instance
+    assert_instance_of @ipv6class, ipv6_instance
+    assert_instance_of @mappedclass, mapped_instance
+
+    assert_same ipv4_instance, @method.call(ipv4_instance)
+    assert_same ipv6_instance, @method.call(ipv6_instance)
+    assert_same mapped_instance, @method.call(mapped_instance)
 
     assert_raises(ArgumentError) {@method.call(@invalid_ipv4)}
     assert_raises(ArgumentError) {@method.call(@invalid_ipv6)}
