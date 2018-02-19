@@ -48,6 +48,11 @@ module IPAddress
       return IPAddress::IPv4.new(ntoa(str))  
     end
 
+    # Check if the argument is an IPv4 or IPv6 object
+    if [:ipv4?, :ipv6?].any? { |m| str.respond_to?(m) && str.send(m) }
+      return str
+    end
+
     case str
     when /:.+\./
       IPAddress::IPv6::Mapped.new(str)
